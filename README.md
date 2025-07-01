@@ -1,6 +1,6 @@
 # DB2 rootless Docker image
 ## Intro
-The official image for DB2 requires `--privileged`. This one is rootless, and does not require `--privileged`. Built on and working with Podman, and DB2 v11.5.9. Docker I haven't actually tested but there's nothing that should cause issues. I also have not tested other versions of DB2
+This unofficial DB2 image is rootless, and does not require `--privileged`. Built on and working with Podman, and DB2 v11.5.9. Docker I haven't actually tested but there's nothing that should cause issues. I also have not tested other versions of DB2
 
 **Do NOT use this in production.** I created this for testing purposes only. It doesn't even have persistence, and I have no plans to implement it.
 
@@ -8,6 +8,15 @@ Hope someone finds this useful
 
 ## Credits
 I did not create the entrypoint script, I took the one from [this project](https://github.com/Taskana/taskana/blob/master/docker-databases/db2_11-5/entrypoint.sh) - I modified it a little to work with my image. See the entrypoint.sh file itself for more information.
+
+I am not affiliated with them, or IBM.
+
+## Disclaimer
+This project is provided "as is" and without any warranty or guarantee of any kind. Use it at your own risk.
+
+The author is not responsible for any damage, data loss, system failure, or other issues that may result from using this software.
+
+See the Apache License 2.0 for more information.
 
 ## How to build
 ### Step 1
