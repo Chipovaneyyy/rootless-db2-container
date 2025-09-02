@@ -30,7 +30,8 @@ RUN dnf install -y pam \
     libxcrypt-compat \
     && dnf clean all
 
-RUN useradd -m -u 1000 db2adm
+RUN useradd -m -u 1000 db2adm \
+    && echo "password" | passwd --stdin db2adm
 ENV DB2_INSTALL_LOC="/home/db2adm/sqllib"
 
 ####################################
