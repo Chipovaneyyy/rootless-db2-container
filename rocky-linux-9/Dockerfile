@@ -62,17 +62,17 @@ RUN ln -s $DB2_INSTALL_LOC/lib64/awssdk/RHEL/9.2/libaws-cpp-sdk-core.so $DB2_INS
 #####################################
 FROM base AS final
 
+COPY --from=install --chown=1000:1000 /home/db2adm /home/db2adm
+
+RUN sed -ri 's/(ENABLE_OS_AUTHENTICATION=).*/\1YES/g' $DB2_INSTALL_LOC/instance/db2rfe.cfg \
+    && sed -ri 's/(RESERVE_REMOTE_CONNECTION=).*/\1YES/g' $DB2_INSTALL_LOC/instance/db2rfe.cfg \
+    && sed -ri 's/^\*(SVCEPORT)=48000/\1=50000/g' $DB2_INSTALL_LOC/instance/db2rfe.cfg \
+    && echo "0 localhost 0" > $DB2_INSTALL_LOC/db2nodes.cfg \
+    && $DB2_INSTALL_LOC/instance/db2rfe -f $DB2_INSTALL_LOC/instance/db2rfe.cfg
+
 EXPOSE 50000
 USER db2adm
 WORKDIR /home/db2adm
-
-COPY --from=install /home/db2adm /home/db2adm
-
-# Set db conncetion port to 50000
-# If done in entrypoint.sh, it throws an error. It doesn't throw an error here though
-RUN source $DB2_INSTALL_LOC/db2profile \
-    && echo "0 ${HOSTNAME} 0" > $DB2_INSTALL_LOC/db2nodes.cfg \
-    && db2 update dbm cfg using SVCENAME 50000
 
 COPY --chown=1000:1000 --chmod=700 ./entrypoint/entrypoint.sh /entrypoint.sh
 CMD ["/entrypoint.sh", "start"]
