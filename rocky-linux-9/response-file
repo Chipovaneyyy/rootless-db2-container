@@ -1,4 +1,12 @@
+** See server_dec/db2/linuxamd64/samples/db2server.rsp from the db2 installer tar archive
+
 PROD = DB2_SERVER_EDITION
 FILE = /home/db2adm/sqllib
 LIC_AGREEMENT = ACCEPT
 INSTALL_TYPE = CUSTOM
+
+*COMP = JDBC_DATA_SOURCE_SUPPORT
+
+** DB2 tutorial tools
+*COMP                     = DB2_SAMPLE_DATABAS
+*COMP                     = FIRST_STEPS
