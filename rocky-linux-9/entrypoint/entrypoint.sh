@@ -79,10 +79,6 @@ if [ "${LICENSE}" != "accept" ];then
 fi
 
 if [[ $1 = "start" ]]; then
-  # Create db2nodes.cfg
-  # This is necessary because DB2 was installed in a separate stage, with a different hostname
-  echo "0 ${HOSTNAME} 0" > ${DB2_INSTALL_LOC}/db2nodes.cfg
-
   log_info "Initializing container"
   start_db2
   log_info "Database db2diag log following"
