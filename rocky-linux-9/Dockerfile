@@ -58,7 +58,7 @@ RUN ln -s $DB2_INSTALL_LOC/lib64/awssdk/RHEL/9.2/libaws-cpp-sdk-core.so $DB2_INS
     && ln -s $DB2_INSTALL_LOC/lib64/awssdk/RHEL/9.2/libaws-cpp-sdk-kinesis.so $DB2_INSTALL_LOC/lib64/libaws-cpp-sdk-kinesis.so 
 
 #####################################
-# Final image with installed DB2
+# Final image with installed and configured DB2
 #####################################
 FROM base AS final
 
@@ -68,7 +68,9 @@ RUN sed -ri 's/(ENABLE_OS_AUTHENTICATION=).*/\1YES/g' $DB2_INSTALL_LOC/instance/
     && sed -ri 's/(RESERVE_REMOTE_CONNECTION=).*/\1YES/g' $DB2_INSTALL_LOC/instance/db2rfe.cfg \
     && sed -ri 's/^\*(SVCEPORT)=48000/\1=50000/g' $DB2_INSTALL_LOC/instance/db2rfe.cfg \
     && echo "0 localhost 0" > $DB2_INSTALL_LOC/db2nodes.cfg \
-    && $DB2_INSTALL_LOC/instance/db2rfe -f $DB2_INSTALL_LOC/instance/db2rfe.cfg
+    && $DB2_INSTALL_LOC/instance/db2rfe -f $DB2_INSTALL_LOC/instance/db2rfe.cfg \
+    && su - db2adm -c "db2 update dbm cfg using SVCENAME 50000" \
+    && su - db2adm -c "db2set DB2COMM=TCPIP"
 
 EXPOSE 50000
 USER db2adm
